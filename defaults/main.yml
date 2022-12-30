@@ -8,3 +8,4 @@ garage_system_group: garage
 garage_binaries_dir: /usr/local/bin
 garage_main_binary: /usr/local/bin/garage
 garage_config_file: /etc/garage.toml
+garage_systemd_service: garage

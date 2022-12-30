@@ -44,10 +44,13 @@
     owner: "{{garage_system_user}}"
     group: "{{garage_system_group}}"
 
-- name: Copy systemd service file
+- name: Copy systemd service file to {{garage_systemd_service}}.service
   template:
     src: systemd/garage.service.j2
-    dest: /etc/systemd/system/garage.service
+    dest: "/etc/systemd/system/{{garage_systemd_service}}.service"
+  notify:
+  - reload systemd
+  - restart garage
 
 - name: Copy garage configuration
   template:
@@ -60,7 +63,7 @@
 
 - name: Start and enable garage service
   service:
-    name: garage
+    name: "{{garage_systemd_service}}"
     state: started
     enabled: yes
 
