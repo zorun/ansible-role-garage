@@ -76,4 +76,3 @@
     name: "{{garage_systemd_service}}"
     state: started
     enabled: yes
-
