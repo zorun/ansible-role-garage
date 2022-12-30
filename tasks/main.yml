@@ -1,8 +1,8 @@
 ---
 
-- name: Download garage version {{garage_version}}
+- name: Download garage version {{garage_version}} for {{garage_architecture}}
   get_url:
-    url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/x86_64-unknown-linux-musl/garage
+    url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/{{garage_architecture}}-unknown-linux-musl/garage
     dest: /usr/local/bin/garage-{{garage_version}}
     mode: 755
   notify: restart garage

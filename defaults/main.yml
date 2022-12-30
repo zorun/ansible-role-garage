@@ -2,3 +2,4 @@ garage_db_engine: "sled"
 garage_replication_mode: 3
 garage_block_size: 1048576
 garage_compression_level: 1
+garage_architecture: "{{ansible_architecture}}"
