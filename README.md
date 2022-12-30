@@ -7,6 +7,9 @@ It downloads a binary release of Garage, creates a system user, setups data and
 metadata directories, generates a configuration file, and finally installs a systemd
 service to run Garage.
 
+Currently, this role does not automatically connect nodes to each other,
+but it is a planned feature.
+
 ## Installation
 
 This role is available on [Ansible Galaxy](https://galaxy.ansible.com/zorun/garage)
@@ -37,6 +40,8 @@ You also need to create a file `templates/garage.toml.j2` at the root of your
 Ansible directory with the following content:
 
 ```
+# Managed by Ansible
+
 metadata_dir = "{{ garage_metadata_dir }}"
 data_dir = "{{ garage_data_dir }}"
 db_engine = "lmdb"
@@ -80,7 +85,9 @@ to configure Garage according to your requirements.
 
 ## Variable reference
 
-A few variables are mandatory.  For optional variables, we indicate the default value.
+All role variables are listed below, followed by a short description.
+A few of these variables are mandatory.  For all other variables, we indicate
+the default value.
 
     garage_version (mandatory)
 
@@ -131,15 +138,15 @@ Name of system group to create.
 
     garage_logging: netapp=info,garage=info
 
-Logging configuration for Garage provided through `RUST_LOG`.
+Logging configuration for Garage, provided through `RUST_LOG`.
 See [env_logger documentation](https://docs.rs/env_logger/latest/env_logger/#enabling-logging)
 for details on the syntax.
 
     garage_architecture: {{ansible_architecture}}
 
-CPU architecture for the downloaded binary.  Should automatically be set to the
-target host architecture, but you can still override it in case it's wrong
-(e.g. for a `i686` host).
+CPU architecture for the downloaded binary.  It should be set automatically
+to the correct target host architecture, but you can still override it in case
+it is wrong (e.g. if you want to run the `i686` binary).
 
 ## Advanced setup: multiple Garage daemons
 
