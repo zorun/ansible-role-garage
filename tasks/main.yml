@@ -18,14 +18,14 @@
 - name: Create garage group
   group:
     state: present
-    name: garage
+    name: "{{garage_system_group}}"
     system: yes
 
 - name: Create garage user
   user:
     state: present
-    name: garage
-    group: garage
+    name: "{{garage_system_user}}"
+    group: "{{garage_system_group}}"
     system: yes
 
 - name: Create /var/lib/garage
@@ -33,16 +33,16 @@
     state: directory
     path: /var/lib/garage
     mode: "700"
-    owner: garage
-    group: garage
+    owner: "{{garage_system_user}}"
+    group: "{{garage_system_group}}"
 
 - name: Create /mnt/data
   file:
     state: directory
     path: /mnt/data
     mode: "700"
-    owner: garage
-    group: garage
+    owner: "{{garage_system_user}}"
+    group: "{{garage_system_group}}"
 
 - name: Copy systemd service file
   copy:
@@ -55,7 +55,7 @@
     dest: /etc/garage.toml
     mode: "640"
     owner: root
-    group: garage
+    group: "{{garage_system_group}}"
   notify: restart garage
 
 - name: Start and enable garage service
