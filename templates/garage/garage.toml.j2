@@ -1,0 +1,27 @@
+metadata_dir = "{{ garage_metadata_dir }}"
+data_dir = "{{ garage_data_dir }}"
+db_engine = "{{ garage_db_engine }}"
+
+replication_mode = "{{ garage_replication_mode }}"
+block_size = {{ garage_block_size }}
+compression_level = {{ garage_compression_level }}
+
+rpc_bind_addr = "{{ ansible_default_ipv4.address }}:3901"
+rpc_public_addr = "{{ ansible_default_ipv4.address }}:3901"
+rpc_secret = "{{ garage_rpc_secret }}"
+
+bootstrap_peers = []
+
+[s3_api]
+s3_region = "garage"
+api_bind_addr = "[::]:3900"
+root_domain = ".s3.garage.localhost"
+
+[s3_web]
+bind_addr = "[::]:3902"
+root_domain = ".web.garage.localhost"
+index = "index.html"
+
+[admin]
+api_bind_addr = "[::1]:3903"
+admin_token = "{{ garage_admin_token }}"

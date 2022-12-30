@@ -1,0 +1,66 @@
+---
+
+- name: Download garage version {{garage_version}}
+  get_url:
+    url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/x86_64-unknown-linux-musl/garage
+    dest: /usr/local/bin/garage-{{garage_version}}
+    mode: 755
+  notify: restart garage
+
+- name: Symlink garage entry point to version {{garage_version}}
+  file:
+    state: link
+    src: /usr/local/bin/garage-{{garage_version}}
+    dest: /usr/local/bin/garage
+    force: yes
+  notify: restart garage
+
+- name: Create garage group
+  group:
+    state: present
+    name: garage
+    system: yes
+
+- name: Create garage user
+  user:
+    state: present
+    name: garage
+    group: garage
+    system: yes
+
+- name: Create /var/lib/garage
+  file:
+    state: directory
+    path: /var/lib/garage
+    mode: "700"
+    owner: garage
+    group: garage
+
+- name: Create /mnt/data
+  file:
+    state: directory
+    path: /mnt/data
+    mode: "700"
+    owner: garage
+    group: garage
+
+- name: Copy systemd service file
+  copy:
+    src: systemd/garage.service
+    dest: /etc/systemd/system/garage.service
+
+- name: Copy garage configuration
+  template:
+    src: garage/garage.toml.j2
+    dest: /etc/garage.toml
+    mode: "640"
+    owner: root
+    group: garage
+  notify: restart garage
+
+- name: Start and enable garage service
+  service:
+    name: garage
+    state: started
+    enabled: yes
+
