@@ -15,7 +15,7 @@
     url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/{{garage_architecture}}-unknown-linux-musl/garage
     dest: "{{garage_binaries_dir}}/garage-{{garage_version}}"
     mode: "755"
-  notify: restart garage
+  tags: [download]
 
 - name: Symlink garage entry point to version {{garage_version}}
   file:

@@ -200,3 +200,33 @@ You can also share the same user and group, depending on your threat model.
 Note that if you want to use the garage CLI, you would need to run something
 like `garage-cluster1 -c /etc/garage-cluster1.toml status`.  Similarly, to
 restart the service: `systemctl restart garage-cluster1`.
+
+## Upgrading a cluster
+
+First, make sure to carefully read the [official upgrade documentation](https://garagehq.deuxfleurs.fr/documentation/cookbook/upgrading/)
+
+### Straightforward upgrades
+
+For a safe "straightforward upgrade":
+
+- read [release notes](https://git.deuxfleurs.fr/Deuxfleurs/garage/releases)
+- increase `garage_version`
+- add `serial: 1` to your playbook (see [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_strategies.html#using-keywords-to-control-execution))
+- run `ansible-playbook` with `--step`
+- after each host has finished upgrading, check that everything works as expected, and tell Ansible to `(c)ontinue`
+
+### Advanced upgrades
+
+For upgrades between incompatible versions, the exact strategy depends on
+the version: please refer to the official documentation and specific migration guide.
+
+If you need to download the new version of Garage without touching the existing
+setup, you can run the "download" task alone and force the version:
+
+```
+ansible-playbook garage.yaml -e garage_version=0.9.0 --tags download
+```
+
+You should now have the new binary on your hosts, accessible through its
+full path (e.g. `/usr/local/bin/garage-0.9.0`).  This allows you to run
+offline migrations.
