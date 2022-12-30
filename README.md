@@ -141,9 +141,62 @@ CPU architecture for the downloaded binary.  Should automatically be set to the
 target host architecture, but you can still override it in case it's wrong
 (e.g. for a `i686` host).
 
-
 ## Advanced setup: multiple Garage daemons
 
 Let's assume you want to run multiple Garage daemons on the same machine.
+For example, you might have several clusters with some overlapping nodes.
 
-TODO
+Here is an example Ansible inventory:
+
+```
+[cluster1]
+host1
+host2
+host3
+
+[cluster2]
+host1
+host2
+host3
+host4
+host5
+```
+
+You can manage this situation through the following playbook:
+
+```
+- hosts: cluster1
+  roles:
+    - garage
+  vars:
+    garage_version: "0.8.0"
+    garage_local_template: "garage.toml.j2"
+    garage_config_file: /etc/garage-cluster2.toml
+    garage_metadata_dir: "/var/lib/garage/cluster1"
+    garage_data_dir: "/mnt/data/cluster1"
+    garage_systemd_service: garage-cluster1
+    garage_main_binary: /usr/local/bin/garage-cluster1
+    garage_system_user: garage-cluster1
+    garage_system_group: garage-cluster1
+
+- hosts: cluster2
+  roles:
+    - garage
+  vars:
+    garage_version: "0.8.1"
+    garage_local_template: "garage.toml.j2"
+    garage_metadata_dir: "/var/lib/garage/cluster2"
+    garage_data_dir: "/mnt/data/cluster2"
+    garage_config_file: /etc/garage-cluster2.toml
+    garage_systemd_service: garage-cluster2
+    garage_main_binary: /usr/local/bin/garage-cluster2
+    garage_system_user: garage-cluster1
+    garage_system_group: garage-cluster1
+```
+
+It is safe to share the same `garage_version` and `garage_local_template`.
+You can also share the same user and group, depending on your threat model.
+
+Note that if you want to use the garage CLI, you would need to run something
+like `garage-cluster1 -c /etc/garage-cluster1.toml status`.  Similarly, to
+restart the service: `systemctl restart garage-cluster1`.
