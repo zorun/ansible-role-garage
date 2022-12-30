@@ -1,11 +1,7 @@
-garage_db_engine: "sled"
-garage_replication_mode: 3
-garage_block_size: 1048576
-garage_compression_level: 1
-garage_architecture: "{{ansible_architecture}}"
-garage_system_user: garage
-garage_system_group: garage
-garage_binaries_dir: /usr/local/bin
-garage_main_binary: /usr/local/bin/garage
 garage_config_file: /etc/garage.toml
 garage_systemd_service: garage
+garage_binaries_dir: /usr/local/bin
+garage_main_binary: /usr/local/bin/garage
+garage_system_user: garage
+garage_system_group: garage
+garage_architecture: "{{ansible_architecture}}"

@@ -1,5 +1,15 @@
 ---
 
+- name: Check that all required variables are defined
+  debug:
+    msg: "{{ item }}"
+  with_items:
+    - "garage_version = {{ garage_version }}"
+    - "garage_local_template = {{ garage_local_template }}"
+    - "garage_metadata_dir = {{ garage_metadata_dir }}"
+    - "garage_data_dir = {{ garage_data_dir }}"
+  run_once: true
+
 - name: Download garage version {{garage_version}} for {{garage_architecture}}
   get_url:
     url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/{{garage_architecture}}-unknown-linux-musl/garage
@@ -54,7 +64,7 @@
 
 - name: Copy garage configuration
   template:
-    src: garage/garage.toml.j2
+    src: "{{garage_local_template}}"
     dest: "{{garage_config_file}}"
     mode: "640"
     owner: root
