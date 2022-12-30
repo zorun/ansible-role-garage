@@ -3,15 +3,15 @@
 - name: Download garage version {{garage_version}} for {{garage_architecture}}
   get_url:
     url: https://garagehq.deuxfleurs.fr/_releases/v{{garage_version}}/{{garage_architecture}}-unknown-linux-musl/garage
-    dest: /usr/local/bin/garage-{{garage_version}}
-    mode: 755
+    dest: "{{garage_binaries_dir}}/garage-{{garage_version}}"
+    mode: "755"
   notify: restart garage
 
 - name: Symlink garage entry point to version {{garage_version}}
   file:
     state: link
-    src: /usr/local/bin/garage-{{garage_version}}
-    dest: /usr/local/bin/garage
+    src: "{{garage_binaries_dir}}/garage-{{garage_version}}"
+    dest: "{{garage_main_binary}}"
     force: yes
   notify: restart garage
 
@@ -28,31 +28,31 @@
     group: "{{garage_system_group}}"
     system: yes
 
-- name: Create /var/lib/garage
+- name: Create metadata dir {{garage_metadata_dir}}
   file:
     state: directory
-    path: /var/lib/garage
+    path: "{{garage_metadata_dir}}"
     mode: "700"
     owner: "{{garage_system_user}}"
     group: "{{garage_system_group}}"
 
-- name: Create /mnt/data
+- name: Create data dir {{garage_data_dir}}
   file:
     state: directory
-    path: /mnt/data
+    path: "{{garage_data_dir}}"
     mode: "700"
     owner: "{{garage_system_user}}"
     group: "{{garage_system_group}}"
 
 - name: Copy systemd service file
-  copy:
-    src: systemd/garage.service
+  template:
+    src: systemd/garage.service.j2
     dest: /etc/systemd/system/garage.service
 
 - name: Copy garage configuration
   template:
     src: garage/garage.toml.j2
-    dest: /etc/garage.toml
+    dest: "{{garage_config_file}}"
     mode: "640"
     owner: root
     group: "{{garage_system_group}}"

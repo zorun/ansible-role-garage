@@ -1,0 +1,19 @@
+[Unit]
+Description=Garage Data Store
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment='GARAGE_CONFIG_FILE={{garage_config_file}}' 'RUST_LOG=garage=info' 'RUST_BACKTRACE=1'
+ExecStart={{garage_main_binary}} server
+User={{garage_system_user}}
+Group={{garage_system_group}}
+PrivateTmp=yes
+RemoveIPC=yes
+ProtectSystem=strict
+ReadWritePaths={{garage_data_dir}} {{garage_metadata_dir}}
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
