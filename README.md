@@ -129,6 +129,12 @@ all files (both data and metadata) will belong to this user.
 
 Name of system group to create.
 
+    garage_logging: netapp=info,garage=info
+
+Logging configuration for Garage provided through `RUST_LOG`.
+See [env_logger documentation](https://docs.rs/env_logger/latest/env_logger/#enabling-logging)
+for details on the syntax.
+
     garage_architecture: {{ansible_architecture}}
 
 CPU architecture for the downloaded binary.  Should automatically be set to the

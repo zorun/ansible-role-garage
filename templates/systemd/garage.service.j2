@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-Environment='GARAGE_CONFIG_FILE={{garage_config_file}}' 'RUST_LOG=garage=info' 'RUST_BACKTRACE=1'
+Environment='GARAGE_CONFIG_FILE={{garage_config_file}}' 'RUST_LOG={{garage_logging}}' 'RUST_BACKTRACE=1'
 ExecStart={{garage_main_binary}} server
 User={{garage_system_user}}
 Group={{garage_system_group}}
