@@ -192,9 +192,9 @@ You can manage this situation through the following playbook:
   vars:
     garage_version: "0.8.1"
     garage_local_template: "garage.toml.j2"
+    garage_config_file: /etc/garage-cluster2.toml
     garage_metadata_dir: "/var/lib/garage/cluster2"
     garage_data_dir: "/mnt/data/cluster2"
-    garage_config_file: /etc/garage-cluster2.toml
     garage_systemd_service: garage-cluster2
     garage_main_binary: /usr/local/bin/garage-cluster2
     garage_system_user: garage-cluster1
