@@ -14,6 +14,7 @@ ProtectSystem=strict
 ReadWritePaths={{garage_data_dir}} {{garage_metadata_dir}}
 ProtectHome=true
 NoNewPrivileges=true
+LimitNOFILE=42000
 
 [Install]
 WantedBy=multi-user.target
